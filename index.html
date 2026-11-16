@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Ocean Dream</title>
+<meta name="description" content="Ocean Dream — aquarium 3D d’eau de mer et d’eau douce : 20 décors, 65 espèces, nourrissage et mode plein écran.">
+<meta name="theme-color" content="#041226">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ocean Dream">
+<meta name="application-name" content="Ocean Dream">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="scene" aria-label="Aquarium"></canvas>
+<div id="veil" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<!-- Écran de chargement -->
+<div id="loader" role="status">
+  <div class="loader-box">
+    <svg class="loader-fish" viewBox="0 0 120 70" aria-hidden="true"><path d="M8 35c14-22 44-28 66-14l26-15c-4 10-4 20 0 30L74 51C52 63 22 57 8 35Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><circle cx="30" cy="31" r="3.4" fill="currentColor"/><path d="M48 21c5 9 5 19 0 28M62 21c4 9 4 19 0 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <p class="loader-name">Ocean Dream</p>
+    <div class="loader-bar"><i id="loaderFill"></i></div>
+    <p class="loader-text" id="loaderText">Mise en eau de l’aquarium…</p>
+  </div>
+</div>
+
+<!-- Barre supérieure -->
+<header id="topbar" class="ui">
+  <div class="brand"><span class="brand-name">Ocean Dream</span><span class="brand-tag" data-i18n="tagline">Aquarium marin</span></div>
+  <div class="lang" role="group" aria-label="Langue / Language">
+    <button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="en" aria-pressed="false">US</button>
+  </div>
+</header>
+
+<!-- Menu principal -->
+<nav id="dock" class="ui" aria-label="Menu">
+  <button type="button" data-nav="aquarium"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10c2-1.4 4-1.4 6 0s4 1.400 6 0 4-1.400 6 0"/><path d="M9.500 15.200c1.300-1.500 3.400-1.800 5-.7l1.700-1v3l-1.700-1c-1.600 1.100-3.700.8-5-.3Z"/></svg><span data-i18n="navAquarium">Aquarium</span></button>
+  <button type="button" data-nav="decors"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18"/><path d="M7 20V9m0 4-2.500-2.500M7 11l2.500-2.500M7 9V5"/><path d="M16 20v-8m0 3 3-3m-3 1-2.500-2.500M16 12V8"/><path d="M11.500 20v-4"/></svg><span data-i18n="navDecors">Décors</span></button>
+  <button type="button" data-nav="fish"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c3-5 9-6.500 13.500-3.200L21 6.500c-.8 3.700-.8 7.300 0 11l-4.500-2.300C12 18.500 6 17 3 12Z"/><circle cx="8" cy="11" r=".9" fill="currentColor" stroke="none"/><path d="M11.500 8.500c1.200 2.300 1.200 4.700 0 7"/></svg><span data-i18n="navFish">Poissons</span></button>
+  <button type="button" data-nav="feed" class="feed"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.500 3.500h7l-.8 3.500h-5.400Z"/><path d="M9.300 7h5.400l1.300 6.500a3 3 0 0 1-3 3.500h-2a3 3 0 0 1-3-3.500Z"/><circle cx="9" cy="20.200" r=".8" fill="currentColor" stroke="none"/><circle cx="12" cy="21" r=".8" fill="currentColor" stroke="none"/><circle cx="15" cy="20.200" r=".8" fill="currentColor" stroke="none"/></svg><span data-i18n="navFeed">Nourrir</span></button>
+  <button type="button" data-nav="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9m4 0h3M4 12h3m4 0h9M4 17h11m4 0h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/></svg><span data-i18n="navSettings">Paramètres</span></button>
+  <button type="button" data-nav="fullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5.500A1.500 1.500 0 0 1 5.500 4H9m6 0h3.500A1.500 1.500 0 0 1 20 5.500V9m0 6v3.500a1.500 1.500 0 0 1-1.500 1.500H15m-6 0H5.500A1.500 1.500 0 0 1 4 18.500V15"/></svg><span data-i18n="navFullscreen">Plein écran</span></button>
+</nav>
+
+<!-- Panneau latéral -->
+<aside id="panel" class="ui" aria-hidden="true">
+  <header class="panel-head">
+    <button type="button" class="icon-btn" id="panelBack" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.500 6-6 6 6 6"/></svg></button>
+    <h2 id="panelTitle"></h2>
+    <button type="button" class="icon-btn" id="panelClose"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+  </header>
+  <div class="panel-body" id="panelBody"></div>
+  <footer class="panel-foot" id="panelFoot" hidden></footer>
+</aside>
+
+<!-- Distributeur de nourriture -->
+<div id="feeder" aria-hidden="true">
+  <svg viewBox="0 0 120 190">
+    <defs>
+      <linearGradient id="fdGlass" x1="0" x2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".5"/><stop offset=".25" stop-color="#bfe6ff" stop-opacity=".2"/><stop offset=".8" stop-color="#9fd4ff" stop-opacity=".22"/><stop offset="1" stop-color="#ffffff" stop-opacity=".42"/></linearGradient>
+      <linearGradient id="fdCap" x1="0" x2="1"><stop offset="0" stop-color="#b8862a"/><stop offset=".35" stop-color="#ffe08a"/><stop offset=".7" stop-color="#d9a53a"/><stop offset="1" stop-color="#8a5e16"/></linearGradient>
+      <clipPath id="fdClip"><path d="M22 52h76v104a18 18 0 0 1-18 18H40a18 18 0 0 1-18-18Z"/></clipPath>
+    </defs>
+    <path d="M22 52h76v104a18 18 0 0 1-18 18H40a18 18 0 0 1-18-18Z" fill="url(#fdGlass)" stroke="#e6f6ff" stroke-opacity=".75" stroke-width="2"/>
+    <g clip-path="url(#fdClip)">
+      <path d="M22 96c14-8 28 6 40 0s24-8 36 0v80H22Z" fill="#b5532a"/>
+      <g fill="#e89a3a"><circle cx="36" cy="112" r="4"/><circle cx="58" cy="124" r="4.500"/><circle cx="82" cy="110" r="4"/><circle cx="70" cy="146" r="4.500"/><circle cx="42" cy="150" r="4"/></g>
+      <g fill="#7f9a3c"><circle cx="48" cy="104" r="3.500"/><circle cx="74" cy="128" r="3.500"/><circle cx="34" cy="134" r="3.500"/><circle cx="86" cy="152" r="3.500"/><circle cx="56" cy="160" r="3.500"/></g>
+      <g fill="#f1c95a"><circle cx="66" cy="106" r="3"/><circle cx="30" cy="160" r="3"/><circle cx="88" cy="134" r="3"/><circle cx="50" cy="138" r="3"/></g>
+      <path d="M30 60v104" stroke="#fff" stroke-opacity=".45" stroke-width="5" stroke-linecap="round"/>
+    </g>
+    <rect x="16" y="26" width="88" height="30" rx="8" fill="url(#fdCap)" stroke="#6e4a10" stroke-width="1.500"/>
+    <path d="M40 26a20 14 0 0 1 40 0Z" fill="url(#fdCap)" stroke="#6e4a10" stroke-width="1.500"/>
+    <g fill="#5a3c0c"><circle cx="52" cy="19" r="2.200"/><circle cx="60" cy="16" r="2.200"/><circle cx="68" cy="19" r="2.200"/></g>
+  </svg>
+</div>
+
+<div id="toasts" class="ui" aria-live="polite"></div>
+<div id="hint" role="status"></div>
+<button type="button" id="corner" aria-label="Afficher le menu"></button>
+
+<script src="libs/three.min.js"></script>
+<script src="translations.js"></script>
+<script src="database-fish.js"></script>
+<script src="freshwater-database.js"></script>
+<script src="compatibility.js"></script>
+<script src="aquarium.js"></script>
+<script src="decorations.js"></script>
+<script src="scenes.js"></script>
+<script src="freshwater-scenes.js"></script>
+<script src="fish-models.js"></script>
+<script src="fish.js"></script>
+<script src="invertebrates.js"></script>
+<script src="freshwater-fish.js"></script>
+<script src="audio.js"></script>
+<script src="feeding.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

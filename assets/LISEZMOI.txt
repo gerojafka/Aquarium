@@ -1,0 +1,8 @@
+Ocean Dream — dossier assets
+
+backgrounds/   Aperçus des 20 décors (mer et eau douce), affichés sur les cartes du menu « Décors ».
+fonts/         Polices de l'interface : Fraunces (titres, noms d'espèces) et Figtree (texte), licence SIL Open Font License 1.1.
+
+Il n'y a volontairement pas de dossiers fish/, corals/ ni textures/ : les poissons, les coraux, les roches et leurs textures
+sont modélisés et peints par le code au lancement (fish-models.js, invertebrates.js, decorations.js, aquarium.js et les fichiers freshwater-*.js).
+Aucune image ni aucun modèle 3D externe n'est donc nécessaire, et tout fonctionne hors connexion.
